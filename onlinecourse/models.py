@@ -97,6 +97,9 @@ class Enrollment(models.Model):
     mode = models.CharField(max_length=5, choices=COURSE_MODES, default=AUDIT)
     rating = models.FloatField(default=5.0)
 
+    def __str__(self):
+        return self.user.username + ' enrolled in ' + self.course.name
+
 
 # <HINT> Create a Question Model with:
     # Used to persist question content for a course
@@ -149,6 +152,9 @@ class Choice(models.Model):
     choice_text = models.CharField(max_length=50, null=False)
     is_correct = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.question.question_text + "  " + self.choice_text
+
 
 # <HINT> The submission model
 # One enrollment could have multiple submission
@@ -160,5 +166,8 @@ class Choice(models.Model):
 #    Other fields and methods you would like to design
 
 class Submission(models.Model):
-   enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
-   chocies = models.ManyToManyField(Choice)
+    enrollment = models.ForeignKey(Enrollment, on_delete=models.CASCADE)
+    choices = models.ManyToManyField(Choice)
+
+    def __str__(self):
+        return f'{self.enrollment.user.first_name} submitted {self.choices}' 
