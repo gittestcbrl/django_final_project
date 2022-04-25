@@ -119,12 +119,13 @@ class Enrollment(models.Model):
     #        return False
 
 class Question(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    question = models.CharField(max_length=100, null=False)
+    # lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    question_text = models.CharField(max_length=100, null=False)
     grade = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f'{self.question} on lesson titled {self.lesson.title}'
+        return f'{self.question_text} on course titled {self.course.name}'
 
     def is_get_score(self, selected_ids):
        all_answers = self.choice_set.filter(is_correct=True).count()
@@ -145,7 +146,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice = models.CharField(max_length=50, null=False)
+    choice_text = models.CharField(max_length=50, null=False)
     is_correct = models.BooleanField(default=False)
 
 

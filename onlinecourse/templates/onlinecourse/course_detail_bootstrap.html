@@ -62,11 +62,14 @@
                 </div>
 
             -->
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#exam-div">Start Exam</button>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#exam-div" style="margin: 10px;">Start Exam</button>
             <div id="exam-div" class="collapse">
-                {% for lesson in course.lesson_set.all %}
-                    {{lesson.}}
+                <!-- {% for lesson in course.lesson_set.all %}
+                    {{lesson}}
                 {% endfor %}
+                {% for question in course.question_set.all %}
+                    {{question}}
+                {% endfor %} -->
 
                 <!-- <HINT> If user is authenticated, show course exam with a list of question -->
 
@@ -101,12 +104,12 @@
                 </form> -->
                 <!-- A choice submission form example -->
                 <form id="questionform" action="point to a submit view" method="post">
-                            {% for question in questions %}
+                            {% for question in course.question_set.all %}
                                 <div class="card mt-1">
                                     <div class="card-header"><h5>{{ question.question_text}}</h5></div>
                                     {% csrf_token %}
                                     <div class="form-group">
-                                    {% for choice in choices %}
+                                    {% for choice in question.choice_set.all %}
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input type="checkbox" name="choice_{{choice.id}}"
