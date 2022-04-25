@@ -159,13 +159,16 @@ def show_exam_result(request, course_id, submission_id):
     except Submission.DoesnotExist:
         return HttpResponse('<h1>Submission id was not found</h1>')
     ans_grade = 0
+    correct_ids = []
     qn_sum_grade = sum(i.grade for i in course.question_set.all())
     for choice in submitted.choices.all():
         if choice.question.is_get_score([choice.id]):
             ans_grade += choice.question.grade
+            correct_ids.append(choice.id)
 
     context = {}
     context['course'] = course
     context['grade'] = (ans_grade/qn_sum_grade) * 100
-    context['selected_ids'] = submitted.choices
+    context['selected_ids'] = list(submitted.choices.all().values_list('id', flat=True))
+    context['correct_ids'] = correct_ids
     return render(request, 'onlinecourse/exam_result_bootstrap.html', context=context)

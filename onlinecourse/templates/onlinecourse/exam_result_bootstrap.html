@@ -55,13 +55,21 @@
                 <div class="card mt-1">
                     <div class="card-header"><h5>{{ question.question_text}}</h5></div>
                     {% csrf_token %}
-                    <div class="form-group">
+                    <div class="ml-4">
                         {% for choice in question.choice_set.all %}
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    {{ choice.choice_text }}
-                                </label>
-                            </div>
+                            {% if choice.id in correct_ids %}
+                                <div class="text-success">
+                                    <label> Correct Answer: {{ choice.choice_text }} </label>
+                                </div>
+                            {% elif choice.id in selected_ids %}
+                                <div class="text-danger">
+                                    <label> Wrong Answer: {{ choice.choice_text }} </label>
+                                </div>
+                            {% else %}
+                                <div>
+                                    <label> {{ choice.choice_text }} </label>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
